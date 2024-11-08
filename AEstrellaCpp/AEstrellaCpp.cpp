@@ -140,12 +140,16 @@ public:
 	Punto Derecha(const Punto& actual) 
 	{ return Punto(actual.i, actual.j + 1); }
 
-	int Manhattan(const Punto& puntoInicial, const Punto& puntoFinal) {
+	int Manhattan(const Punto& puntoInicial, const Punto& puntoFinal) 
+	{
 		return abs(puntoInicial.i - puntoFinal.i) + abs(puntoInicial.j - puntoFinal.j);
 	}
 
-	int Alternativa(const Punto& puntoInicial, const Punto& puntoFinal) {
-		return 1.6 * static_cast<float>(Manhattan(puntoInicial, puntoFinal));
+	int Alternativa(const Punto& puntoInicial, const Punto& puntoFinal) 
+	{
+		//Heuristica alternativa basada en distancia euclideana
+		return sqrt((puntoFinal.i-puntoInicial.i)*(puntoFinal.i - puntoInicial.i)
+			+ (puntoFinal.j - puntoInicial.j)* (puntoFinal.j - puntoInicial.j));
 	}
 
 	//Metodo usado en Heuristica de Manhattan
@@ -372,7 +376,9 @@ public:
 	void printFormatoEvaluador()
 	{
 		ofstream salidatxt;
-		salidatxt.open("Evaluador/solutions/salida.txt");
+		string size = to_string(this->size);
+		string sizeSol = to_string(this->size / 1000);
+		salidatxt.open("Evaluador/solutions/solution_set0_laberinto_"+size+"x"+size+".txt");
 
 		//largo Camino:
 		salidatxt << this->solucion.size() - 1 << endl; //Se le quita uno para que no cuente el comienzo
