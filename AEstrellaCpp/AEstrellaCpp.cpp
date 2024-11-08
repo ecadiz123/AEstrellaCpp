@@ -68,9 +68,12 @@ private:
 	vector<Nodo*> solucion;
 	int size;
 	Nodo* llegada;
+	string path;
 
 public:
-	Laberinto(const string& path) {
+	Laberinto(const string& path) 
+	{
+		this->path = path;
 		ifstream archivo(path);
 		if (archivo.is_open()) {
 			string linea;
@@ -376,9 +379,9 @@ public:
 	void printFormatoEvaluador()
 	{
 		ofstream salidatxt;
-		string size = to_string(this->size);
 		
-		salidatxt.open("Evaluador/solutions/solution_set0_laberinto_"+size+"x"+size+".txt");
+		
+		salidatxt.open("Evaluador/solutions/solution_"+this->path);
 
 		//largo Camino:
 		salidatxt << this->solucion.size() - 1 << endl; //Se le quita uno para que no cuente el comienzo
