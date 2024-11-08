@@ -191,7 +191,8 @@ public:
 
             // Se verifica si ya se llegó al destino
             // y rompe el bucle.
-            if (actual->pto == this->final) {
+            if (actual->pto == this->final) 
+            {
                 break;
             }
 
@@ -202,19 +203,30 @@ public:
             // actual, hace las comparaciones correspondientes y
             // recorre los vecinos.
             vector<Nodo*> vecinos = vecinosAArreglo(actual);
-            for (Nodo* nodovecino : vecinos) {
-                if (nodovecino != nullptr) {
-                    if (entrada.count(nodovecino->pto)) {
-                        if (entrada[nodovecino->pto]->costoAcumulado > nodovecino->costoAcumulado) {
+            for (Nodo* nodovecino : vecinos) 
+            {
+                if (nodovecino != nullptr)//Si el valor es null, nodovecino no es valido 
+                {
+                    //Se revisa si existe el mismo pto en listas entrada
+                    //y salida y si es que tiene mayor costo, es remplazado por
+                    //nodovecino
+                    if (entrada.count(nodovecino->pto)) 
+                    {
+                        if (entrada[nodovecino->pto]->costoAcumulado > nodovecino->costoAcumulado)
+                        {
                             entrada.erase(nodovecino->pto);
                         }
                     }
                     if (salida.count(nodovecino->pto)) {
-                        if (salida[nodovecino->pto]->costoAcumulado > nodovecino->costoAcumulado) {
+                        if (salida[nodovecino->pto]->costoAcumulado > nodovecino->costoAcumulado)
+                        {
                             salida.erase(nodovecino->pto);
                         }
                     }
-                    if (!salida.count(nodovecino->pto) && !entrada.count(nodovecino->pto)) {
+                    //En el caso de que no este en ninguna lista, se añade
+                    //a entrada para que sea procesado
+                    if (!salida.count(nodovecino->pto) && !entrada.count(nodovecino->pto))
+                    {
                         entrada[nodovecino->pto] = nodovecino;
                         menorF.push(make_pair(nodovecino->fTotal, nodovecino));
                     }
@@ -227,7 +239,8 @@ public:
         // los nodos y lo invierte para que sea el orden correcto, dando
         // el camino más óptimo.
         Nodo* aux = actual;
-        while (aux->padre != nullptr) {
+        while (aux->padre != nullptr) 
+        {
             this->solucion.push_back(aux);
             aux = aux->padre;
         }
@@ -235,6 +248,25 @@ public:
         reverse(this->solucion.begin(), this->solucion.end());
     }
 
+  
+    //Funcion que usa H alternativa
+    vector<Nodo*> vecinosAArregloAlt(Nodo* actual) 
+    {
+        vector<Nodo*> vecinos(4, nullptr);
+        if (MovValido(Arriba(actual->pto))) {
+            vecinos[0] = new Nodo(actual, Arriba(actual->pto), Alternativa(Arriba(actual->pto), this->final));
+        }
+        if (MovValido(Abajo(actual->pto))) {
+            vecinos[1] = new Nodo(actual, Abajo(actual->pto), Alternativa(Abajo(actual->pto), this->final));
+        }
+        if (MovValido(Izquierda(actual->pto))) {
+            vecinos[2] = new Nodo(actual, Izquierda(actual->pto), Alternativa(Izquierda(actual->pto), this->final));
+        }
+        if (MovValido(Derecha(actual->pto))) {
+            vecinos[3] = new Nodo(actual, Derecha(actual->pto), Alternativa(Derecha(actual->pto), this->final));
+        }
+        return vecinos;
+    }
 
     // Lo mismo que arriba pero se usa la heurística
     // alternativa en lugar de la de Manhattan normal.
@@ -258,7 +290,7 @@ public:
             entrada.erase(actual->pto);
             salida[actual->pto] = actual;
 
-            vector<Nodo*> vecinos = vecinosAArreglo(actual);
+            vector<Nodo*> vecinos = vecinosAArregloAlt(actual);
             for (Nodo* nodovecino : vecinos) {
                 if (nodovecino != nullptr) {
                     if (entrada.count(nodovecino->pto)) {
@@ -355,7 +387,8 @@ int main() {
 
     auto start = chrono::high_resolution_clock::now();
 
-    switch (x) {
+    switch (x) 
+    {
     case 1:
         labprueba.AestrellaManhattan();
         break;
@@ -371,8 +404,7 @@ int main() {
     cout << "Tiempo " << duration.count() << " Segundos" << endl;
 
 
-    labprueba.printLaberintoCamino();
-    labprueba.printDirecciones();
+    
 
 
     return 0;
