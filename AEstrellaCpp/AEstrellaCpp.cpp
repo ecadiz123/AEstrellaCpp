@@ -377,7 +377,7 @@ public:
 	{
 		ofstream salidatxt;
 		string size = to_string(this->size);
-		string sizeSol = to_string(this->size / 1000);
+		
 		salidatxt.open("Evaluador/solutions/solution_set0_laberinto_"+size+"x"+size+".txt");
 
 		//largo Camino:
@@ -411,7 +411,7 @@ public:
 };
 
 int main() {
-	string pathrelativo = "Laberintos/";
+	string pathrelativo = "Evaluador/sets/";
 	cout << "Ingresar nombre archivo" << endl;
 	string name;
 	cin >> name;
@@ -439,11 +439,12 @@ int main() {
 	}
 
 	labprueba.printFormatoEvaluador();
-
-	//auto end = chrono::high_resolution_clock::now();
-	//auto duration = chrono::duration_cast<chrono::seconds>(end - start);
-
-	//cout << "Tiempo " << duration.count() << " Segundos" << endl;
+	labprueba.printNumNodos();
+	auto end = chrono::high_resolution_clock::now();
+	auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+	
+	
+	cout << "Tiempo: "<< duration.count()<< " ms" << endl;
 
 
 
